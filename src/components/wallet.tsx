@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
 
@@ -11,7 +11,7 @@ const Wallet = () => {
   const { setMetamaskProvider, address, metamaskConnected } =
     useContext(RootContext);
 
-  const connect_wallet = async () => {
+  const connectWalletOnClick = async () => {
     const metamaskProvider = await blockchain.getMetamaskProvider();
     if (metamaskProvider) {
       setMetamaskProvider(metamaskProvider);
@@ -27,7 +27,7 @@ const Wallet = () => {
       <Button
         variant="contained"
         disabled={metamaskConnected}
-        onClick={connect_wallet}
+        onClick={connectWalletOnClick}
       >
         {metamaskConnected ? address : "Connect Wallet"}
       </Button>

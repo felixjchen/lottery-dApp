@@ -5,7 +5,8 @@ import "./App.css";
 import { useAsync } from "react-async";
 import * as blockchain from "./apis/blockchain";
 import { ethers } from "ethers";
-import { Lottery } from "./components/lottery";
+import { User } from "./components/user";
+import { Card } from "@mui/material";
 
 const App = () => {
   const initialMetamaskProvider = useAsync({
@@ -26,7 +27,6 @@ const App = () => {
     ethers.Contract | undefined
   >(undefined);
   const [address, setAddress] = useState("");
-  const [balance, setBalance] = useState("");
 
   useEffect(() => {
     if (initialMetamaskProvider) {
@@ -47,8 +47,6 @@ const App = () => {
           setLotteryContract(lotteryContract);
           setMockTokenContract(mockTokenContract);
 
-          // const balance = await mockTokenContract.balanceOf(address);
-          // setBalance(blockchain.weiToEth(balance));
           const amIOwner = await lotteryContract.amIOwner();
           const amIManager = await lotteryContract.amIManager();
         }
@@ -57,8 +55,6 @@ const App = () => {
   }, [initialMetamaskProvider]);
 
   const value = {
-    // balance,
-    // setBalance,
     metamaskProvider,
     setMetamaskProvider,
     address,
@@ -75,7 +71,11 @@ const App = () => {
       <div className="App">
         <header className="App-header">
           <Wallet></Wallet>
-          {metamaskConnected && <Lottery></Lottery>}
+          {metamaskConnected && (
+            <Card variant="outlined">
+              <User></User>
+            </Card>
+          )}
         </header>
       </div>
     </RootContextProvider>

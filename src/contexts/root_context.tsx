@@ -26,13 +26,11 @@ const RootContext = createContext<RootContextValue>({
   address: "",
   metamaskConnected: false,
   provider: undefined,
-  // balance: "",
   lotteryContract: undefined,
   mockTokenContract: undefined,
   setMetamaskProvider: NO_OP,
   setAddress: NO_OP,
   setMetamaskConnected: NO_OP,
-  // setBalance: NO_OP,
 });
 const RootContextProvider = ({ children, value }: RootContextProviderProps) => {
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

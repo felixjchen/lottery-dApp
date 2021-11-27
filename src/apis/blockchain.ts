@@ -41,15 +41,16 @@ export const getAccountSigner = async (
   return await provider.getSigner();
 };
 export const getContracts = async (provider: ethers.providers.Web3Provider) => {
+  const signer = provider.getSigner();
   const lotteryContract = new ethers.Contract(
     lottery_address,
     lotter_abi,
-    provider
+    signer
   );
   const mockTokenContract = new ethers.Contract(
     mocktoken_address,
     mocktoken_abi,
-    provider
+    signer
   );
   return { lotteryContract, mockTokenContract };
 };
