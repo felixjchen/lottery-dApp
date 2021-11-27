@@ -5,16 +5,17 @@ import { ethers } from "ethers";
 const NO_OP = () => {};
 
 interface RootContextValue {
-  metamaskProvider: any;
-  setMetamaskProvider: CallableFunction;
   address: string;
-  setAddress: CallableFunction;
+  metamaskProvider: any;
   metamaskConnected: boolean;
-  setMetamaskConnected: CallableFunction;
   provider: ethers.providers.Web3Provider | undefined;
-  setProvider: CallableFunction;
-  balance: string;
-  setBalance: CallableFunction;
+  // balance: string;
+  lotteryContract: ethers.Contract | undefined;
+  mockTokenContract: ethers.Contract | undefined;
+  setMetamaskProvider: CallableFunction;
+  setAddress: CallableFunction;
+  setMetamaskConnected: CallableFunction;
+  // setBalance: CallableFunction;
 }
 interface RootContextProviderProps {
   children: ReactNode;
@@ -22,15 +23,16 @@ interface RootContextProviderProps {
 }
 const RootContext = createContext<RootContextValue>({
   metamaskProvider: undefined,
-  setMetamaskProvider: NO_OP,
   address: "",
-  setAddress: NO_OP,
   metamaskConnected: false,
-  setMetamaskConnected: NO_OP,
   provider: undefined,
-  setProvider: NO_OP,
-  balance: "",
-  setBalance: NO_OP,
+  // balance: "",
+  lotteryContract: undefined,
+  mockTokenContract: undefined,
+  setMetamaskProvider: NO_OP,
+  setAddress: NO_OP,
+  setMetamaskConnected: NO_OP,
+  // setBalance: NO_OP,
 });
 const RootContextProvider = ({ children, value }: RootContextProviderProps) => {
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

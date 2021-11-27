@@ -8,7 +8,7 @@ const reload_window = () => {
 };
 
 const Wallet = () => {
-  const { setMetamaskProvider, balance, address, metamaskConnected } =
+  const { setMetamaskProvider, address, metamaskConnected } =
     useContext(RootContext);
 
   const connect_wallet = async () => {
@@ -24,7 +24,6 @@ const Wallet = () => {
 
   return (
     <>
-      {metamaskConnected && balance + "MOK"}
       <Button
         variant="contained"
         disabled={metamaskConnected}

@@ -41,17 +41,17 @@ export const getAccountSigner = async (
   return await provider.getSigner();
 };
 export const getContracts = async (provider: ethers.providers.Web3Provider) => {
-  const lottery_contract = new ethers.Contract(
+  const lotteryContract = new ethers.Contract(
     lottery_address,
     lotter_abi,
     provider
   );
-  const mock_token_contract = new ethers.Contract(
+  const mockTokenContract = new ethers.Contract(
     mocktoken_address,
     mocktoken_abi,
     provider
   );
-  return { lottery_contract, mock_token_contract };
+  return { lotteryContract, mockTokenContract };
 };
 
 export const addConnectListener = (

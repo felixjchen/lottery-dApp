@@ -19,6 +19,12 @@ const App = () => {
   const [provider, setProvider] = useState<
     ethers.providers.Web3Provider | undefined
   >(undefined);
+  const [lotteryContract, setLotteryContract] = useState<
+    ethers.Contract | undefined
+  >(undefined);
+  const [mockTokenContract, setMockTokenContract] = useState<
+    ethers.Contract | undefined
+  >(undefined);
   const [address, setAddress] = useState("");
   const [balance, setBalance] = useState("");
 
@@ -36,18 +42,23 @@ const App = () => {
         setAddress(address);
 
         if (address) {
-          const { lottery_contract, mock_token_contract } =
+          const { lotteryContract, mockTokenContract } =
             await blockchain.getContracts(provider);
-          const balance = await mock_token_contract.balanceOf(address);
-          setBalance(blockchain.weiToEth(balance));
+          setLotteryContract(lotteryContract);
+          setMockTokenContract(mockTokenContract);
+
+          // const balance = await mockTokenContract.balanceOf(address);
+          // setBalance(blockchain.weiToEth(balance));
+          const amIOwner = await lotteryContract.amIOwner();
+          const amIManager = await lotteryContract.amIManager();
         }
       })();
     }
   }, [initialMetamaskProvider]);
 
   const value = {
-    balance,
-    setBalance,
+    // balance,
+    // setBalance,
     metamaskProvider,
     setMetamaskProvider,
     address,
@@ -55,7 +66,8 @@ const App = () => {
     metamaskConnected,
     setMetamaskConnected,
     provider,
-    setProvider,
+    lotteryContract,
+    mockTokenContract,
   };
 
   return (
