@@ -1,26 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
+import { RootContextProvider } from "./contexts/root_context";
+import { Control } from "./components/control";
 import "./App.css";
+import { useAsync } from "react-async";
+import * as blockchain from "./apis/blockchain";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () => {
+  const initialProvider = useAsync({
+    promiseFn: blockchain.getMetamaskProvider,
+  }).data;
+  const initialIsMetamaskConnected = initialProvider
+    ? blockchain.isMetamaskConnected(initialProvider)
+    : false;
+
+  const [provider, setProvider] = useState(initialProvider);
+  const [isMetamaskConnected, setIsMetamaskConnected] = useState(
+    initialIsMetamaskConnected
   );
-}
+
+  const value = {
+    provider,
+    setProvider,
+    isMetamaskConnected,
+    setIsMetamaskConnected,
+  };
+
+  return (
+    <RootContextProvider value={value}>
+      <div className="App">
+        <header className="App-header">
+          <Control></Control>
+          <img src={logo} className="App-logo" alt="logo" />
+        </header>
+      </div>
+    </RootContextProvider>
+  );
+};
 
 export default App;

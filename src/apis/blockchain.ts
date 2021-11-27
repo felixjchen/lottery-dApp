@@ -6,27 +6,17 @@ interface ProviderMessage {
   data: unknown;
 }
 
-export const getWeb3Provider = (
-  provider: ethers.providers.ExternalProvider
-) => {
-  return new ethers.providers.Web3Provider(provider);
-};
-
 export const getMetamaskProvider = async () => {
   const provider = await detectEthereumProvider();
-  if (provider) {
-    return provider;
-  } else {
-    return null;
-  }
+  return provider;
 };
 
-export const connectToMetamask = (web3Provider: any) => {
-  web3Provider.request({ method: "eth_requestAccounts" });
-};
-
-export const isMetamaskConnected = async (provider: any) => {
+export const isMetamaskConnected = (provider: any) => {
   return provider.isConnected();
+};
+
+export const connectToMetamask = (provider: any) => {
+  provider.request({ method: "eth_requestAccounts" });
 };
 
 export const addMetamaskListeners = (
