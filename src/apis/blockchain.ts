@@ -1,5 +1,11 @@
 import { ethers } from "ethers";
 import detectEthereumProvider from "@metamask/detect-provider";
+import {
+  lottery_address,
+  mocktoken_address,
+} from "../constants/smart_contract_address.json";
+import { abi as lotter_abi } from "../abis/Lottery.json";
+import { abi as mocktoken_abi } from "../abis/MockToken.json";
 
 interface ProviderMessage {
   type: string;
@@ -17,11 +23,9 @@ interface ProviderRpcError extends Error {
 export const getMetamaskProvider = async () => {
   return await detectEthereumProvider();
 };
-
 export const getWeb3Provider = (metamaskProvider: any) => {
   return new ethers.providers.Web3Provider(metamaskProvider);
 };
-
 export const connectMetamask = (metamaskProvider: any) => {
   metamaskProvider.request({ method: "eth_requestAccounts" });
 };
@@ -31,26 +35,23 @@ export const isMetamaskConnected = async (
   const accounts = await provider.listAccounts();
   return accounts.length > 0;
 };
-
 export const getAccountSigner = async (
-  web3Provider: ethers.providers.Web3Provider
+  provider: ethers.providers.Web3Provider
 ) => {
-  return await web3Provider.getSigner();
+  return await provider.getSigner();
 };
-
-export const weiToEth = (weiBalance: ethers.BigNumberish) => {
-  return ethers.utils.formatEther(weiBalance);
-};
-
-export const ethToWei = (ethBalance: string) => {
-  return ethers.utils.parseEther(ethBalance);
-};
-
-export const formatUnits = (
-  weiBalance: ethers.BigNumberish,
-  decimals: ethers.BigNumberish
-) => {
-  return ethers.utils.formatUnits(weiBalance, decimals);
+export const getContracts = async (provider: ethers.providers.Web3Provider) => {
+  const lottery_contract = new ethers.Contract(
+    lottery_address,
+    lotter_abi,
+    provider
+  );
+  const mock_token_contract = new ethers.Contract(
+    mocktoken_address,
+    mocktoken_abi,
+    provider
+  );
+  return { lottery_contract, mock_token_contract };
 };
 
 export const addConnectListener = (
@@ -97,4 +98,17 @@ export const addAccountsChangedListener = (
   provider.on("accountsChanged", (accounts: Array<string>) => {
     accountsChangedCallback(accounts);
   });
+};
+
+export const weiToEth = (weiBalance: ethers.BigNumberish) => {
+  return ethers.utils.formatEther(weiBalance);
+};
+export const ethToWei = (ethBalance: string) => {
+  return ethers.utils.parseEther(ethBalance);
+};
+export const formatUnits = (
+  weiBalance: ethers.BigNumberish,
+  decimals: ethers.BigNumberish
+) => {
+  return ethers.utils.formatUnits(weiBalance, decimals);
 };

@@ -7,14 +7,9 @@ const reload_window = () => {
   window.location.reload();
 };
 
-const Control = () => {
-  const {
-    setMetamaskProvider,
-    setProvider,
-    address,
-    setAddress,
-    metamaskConnected,
-  } = useContext(RootContext);
+const Wallet = () => {
+  const { setMetamaskProvider, balance, address, metamaskConnected } =
+    useContext(RootContext);
 
   const connect_wallet = async () => {
     const metamaskProvider = await blockchain.getMetamaskProvider();
@@ -22,11 +17,6 @@ const Control = () => {
       setMetamaskProvider(metamaskProvider);
       blockchain.addAccountsChangedListener(metamaskProvider, reload_window);
       blockchain.connectMetamask(metamaskProvider);
-
-      const provider = blockchain.getWeb3Provider(metamaskProvider);
-      setProvider(provider);
-      const [address] = await provider.listAccounts();
-      setAddress(address);
     } else {
       alert("Could not find window.etherum");
     }
@@ -34,6 +24,7 @@ const Control = () => {
 
   return (
     <>
+      {metamaskConnected && balance + "MOK"}
       <Button
         variant="contained"
         disabled={metamaskConnected}
@@ -45,4 +36,4 @@ const Control = () => {
   );
 };
 
-export { Control };
+export { Wallet };
