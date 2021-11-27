@@ -22,8 +22,8 @@ export const getWeb3Provider = (metamaskProvider: any) => {
   return new ethers.providers.Web3Provider(metamaskProvider);
 };
 
-export const connectMetamask = (provider: any) => {
-  provider.request({ method: "eth_requestAccounts" });
+export const connectMetamask = (metamaskProvider: any) => {
+  metamaskProvider.request({ method: "eth_requestAccounts" });
 };
 export const isMetamaskConnected = async (
   provider: ethers.providers.Web3Provider
@@ -31,10 +31,6 @@ export const isMetamaskConnected = async (
   const accounts = await provider.listAccounts();
   return accounts.length > 0;
 };
-
-// export const getAddresses = asy (provider: any) => {
-//   return await provider.listAccounts();
-// };
 
 export const getAccountSigner = async (
   web3Provider: ethers.providers.Web3Provider
