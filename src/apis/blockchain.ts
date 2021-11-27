@@ -26,31 +26,6 @@ export const getAddresses = (provider: any) => {
   return provider.request({ method: "eth_requestAccounts" });
 };
 
-export const addMetamaskListeners = (
-  provider: any,
-  connectCallback: CallableFunction,
-  disconnectCallback: CallableFunction,
-  chainChangedCallback: CallableFunction,
-  messageCallback: CallableFunction,
-  accountsChangedCallback: CallableFunction
-) => {
-  provider.on("connect", (connectInfo: ConnectInfo) => {
-    connectCallback(connectInfo);
-  });
-  provider.on("disconnect", (error: ProviderRpcError) => {
-    disconnectCallback(error);
-  });
-  provider.on("chainChanged", (chainId: string) => {
-    chainChangedCallback(chainId);
-  });
-  provider.on("message", (message: ProviderMessage) => {
-    messageCallback(message);
-  });
-  provider.on("accountsChanged", (accounts: Array<string>) => {
-    accountsChangedCallback(accounts);
-  });
-};
-
 export const getAccountSigner = async (
   web3Provider: ethers.providers.Web3Provider
 ) => {
@@ -70,4 +45,50 @@ export const formatUnits = (
   decimals: ethers.BigNumberish
 ) => {
   return ethers.utils.formatUnits(weiBalance, decimals);
+};
+
+export const addConnectListener = (
+  provider: any,
+  connectCallback: CallableFunction
+) => {
+  provider.on("connect", (connectInfo: ConnectInfo) => {
+    connectCallback(connectInfo);
+  });
+};
+
+export const addDisconnectListener = (
+  provider: any,
+  disconnectCallback: CallableFunction
+) => {
+  provider.on("disconnect", (error: ProviderRpcError) => {
+    console.log(error);
+    disconnectCallback(error);
+  });
+};
+
+export const addChainChangedListener = (
+  provider: any,
+  chainChangedCallback: CallableFunction
+) => {
+  provider.on("chainChanged", (chainId: string) => {
+    chainChangedCallback(chainId);
+  });
+};
+
+export const addMessageListener = (
+  provider: any,
+  messageCallback: CallableFunction
+) => {
+  provider.on("message", (message: ProviderMessage) => {
+    messageCallback(message);
+  });
+};
+
+export const addAccountsChangedListener = (
+  provider: any,
+  accountsChangedCallback: CallableFunction
+) => {
+  provider.on("accountsChanged", (accounts: Array<string>) => {
+    accountsChangedCallback(accounts);
+  });
 };

@@ -4,17 +4,8 @@ import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
 
 const Control = () => {
-  const { provider, setProvider } = useContext(RootContext);
-  const [address, setAddress] = useState();
-
-  useEffect(() => {
-    if (provider) {
-      (async () => {
-        const [address] = await blockchain.getAddresses(provider);
-        setAddress(address);
-      })();
-    }
-  }, [provider]);
+  const { provider, setProvider, address, setAddress } =
+    useContext(RootContext);
 
   const connect_wallet = async () => {
     const provider: any = await blockchain.getMetamaskProvider();

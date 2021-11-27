@@ -10,14 +10,27 @@ const App = () => {
   const initialProvider = useAsync({
     promiseFn: blockchain.getMetamaskProvider,
   }).data;
+
+  const [provider, setProvider] = useState(initialProvider);
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    if (provider) {
+      (async () => {
+        const [address] = await blockchain.getAddresses(provider);
+        setAddress(address);
+      })();
+    }
+  }, [provider, setAddress]);
   useEffect(() => {
     setProvider(initialProvider);
   }, [initialProvider]);
-  const [provider, setProvider] = useState(initialProvider);
 
   const value = {
     provider,
     setProvider,
+    address,
+    setAddress,
   };
 
   return (

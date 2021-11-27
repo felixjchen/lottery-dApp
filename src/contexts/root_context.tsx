@@ -6,6 +6,8 @@ const NO_OP = () => {};
 interface RootContextValue {
   provider: any;
   setProvider: CallableFunction;
+  address: string;
+  setAddress: CallableFunction;
 }
 interface RootContextProviderProps {
   children: ReactNode;
@@ -14,6 +16,8 @@ interface RootContextProviderProps {
 const RootContext = createContext<RootContextValue>({
   provider: undefined,
   setProvider: NO_OP,
+  address: "",
+  setAddress: NO_OP,
 });
 const RootContextProvider = ({ children, value }: RootContextProviderProps) => {
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;
