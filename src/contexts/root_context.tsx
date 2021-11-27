@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type { ReactNode } from "react";
+import { ethers } from "ethers";
 
 const NO_OP = () => {};
 
@@ -10,6 +11,8 @@ interface RootContextValue {
   setAddress: CallableFunction;
   metamaskConnected: boolean;
   setMetamaskConnected: CallableFunction;
+  provider: ethers.providers.Web3Provider | undefined;
+  setProvider: CallableFunction;
 }
 interface RootContextProviderProps {
   children: ReactNode;
@@ -22,6 +25,8 @@ const RootContext = createContext<RootContextValue>({
   setAddress: NO_OP,
   metamaskConnected: false,
   setMetamaskConnected: NO_OP,
+  provider: undefined,
+  setProvider: NO_OP,
 });
 const RootContextProvider = ({ children, value }: RootContextProviderProps) => {
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

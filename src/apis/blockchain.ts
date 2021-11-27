@@ -14,28 +14,27 @@ interface ProviderRpcError extends Error {
   data?: unknown;
 }
 
-export const getWeb3Provider = (provider: any) => {
-  return new ethers.providers.Web3Provider(provider);
-};
-
 export const getMetamaskProvider = async () => {
-  const provider = await detectEthereumProvider();
-  return provider;
+  return await detectEthereumProvider();
 };
 
-export const isMetamaskConnected = async (provider: any) => {
-  const web3Provider = getWeb3Provider(provider);
-  const accounts = await web3Provider.listAccounts();
-  return accounts.length > 0;
+export const getWeb3Provider = (metamaskProvider: any) => {
+  return new ethers.providers.Web3Provider(metamaskProvider);
 };
 
 export const connectMetamask = (provider: any) => {
   provider.request({ method: "eth_requestAccounts" });
 };
-
-export const getAddresses = (provider: any) => {
-  return ["1"];
+export const isMetamaskConnected = async (
+  provider: ethers.providers.Web3Provider
+) => {
+  const accounts = await provider.listAccounts();
+  return accounts.length > 0;
 };
+
+// export const getAddresses = asy (provider: any) => {
+//   return await provider.listAccounts();
+// };
 
 export const getAccountSigner = async (
   web3Provider: ethers.providers.Web3Provider

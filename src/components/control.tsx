@@ -3,20 +3,30 @@ import Button from "@mui/material/Button";
 import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
 
+const reload_window = () => {
+  window.location.reload();
+};
+
 const Control = () => {
-  const { setMetamaskProvider, address, setAddress, metamaskConnected } =
-    useContext(RootContext);
+  const {
+    setMetamaskProvider,
+    setProvider,
+    address,
+    setAddress,
+    metamaskConnected,
+  } = useContext(RootContext);
+
   const connect_wallet = async () => {
     const metamaskProvider = await blockchain.getMetamaskProvider();
     if (metamaskProvider) {
-      blockchain.addAccountsChangedListener(metamaskProvider, () => {
-        "Addresses changed, reloading";
-        window.location.reload();
-      });
-      blockchain.connectMetamask(metamaskProvider);
-      const [address] = await blockchain.getAddresses(metamaskProvider);
-      setAddress(address);
       setMetamaskProvider(metamaskProvider);
+      blockchain.addAccountsChangedListener(metamaskProvider, reload_window);
+      blockchain.connectMetamask(metamaskProvider);
+
+      const provider = blockchain.getWeb3Provider(metamaskProvider);
+      setProvider(provider);
+      const [address] = await provider.listAccounts();
+      setAddress(address);
     } else {
       alert("Could not find window.etherum");
     }
