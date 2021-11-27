@@ -8,6 +8,8 @@ interface RootContextValue {
   setMetamaskProvider: CallableFunction;
   address: string;
   setAddress: CallableFunction;
+  metamaskConnected: boolean;
+  setMetamaskConnected: CallableFunction;
 }
 interface RootContextProviderProps {
   children: ReactNode;
@@ -18,6 +20,8 @@ const RootContext = createContext<RootContextValue>({
   setMetamaskProvider: NO_OP,
   address: "",
   setAddress: NO_OP,
+  metamaskConnected: false,
+  setMetamaskConnected: NO_OP,
 });
 const RootContextProvider = ({ children, value }: RootContextProviderProps) => {
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

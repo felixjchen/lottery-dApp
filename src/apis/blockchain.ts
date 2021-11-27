@@ -24,11 +24,17 @@ export const getMetamaskProvider = async () => {
 };
 
 export const isMetamaskConnected = async (provider: any) => {
-  return await provider.isConnected();
+  const web3Provider = getWeb3Provider(provider);
+  const accounts = await web3Provider.listAccounts();
+  return accounts.length > 0;
+};
+
+export const connectMetamask = (provider: any) => {
+  provider.request({ method: "eth_requestAccounts" });
 };
 
 export const getAddresses = (provider: any) => {
-  return provider.request({ method: "eth_requestAccounts" });
+  return ["1"];
 };
 
 export const getAccountSigner = async (

@@ -10,11 +10,31 @@ const App = () => {
   const initialMetamaskProvider = useAsync({
     promiseFn: blockchain.getMetamaskProvider,
   }).data;
+  const initialMetamaskConnected =
+    useAsync({
+      promiseFn: blockchain.isMetamaskConnected,
+      provider: initialMetamaskProvider,
+    }).data || false;
 
   const [metamaskProvider, setMetamaskProvider] = useState(
     initialMetamaskProvider
   );
+  const [metamaskConnected, setMetamaskConnected] = useState(
+    initialMetamaskConnected
+  );
   const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    setMetamaskProvider(initialMetamaskProvider);
+    (async () => {
+      if (initialMetamaskProvider) {
+        const metamaskConnected = await blockchain.isMetamaskConnected(
+          initialMetamaskProvider
+        );
+        setMetamaskConnected(metamaskConnected);
+      }
+    })();
+  }, [initialMetamaskProvider]);
 
   useEffect(() => {
     if (metamaskProvider) {
@@ -24,15 +44,20 @@ const App = () => {
       })();
     }
   }, [metamaskProvider, setAddress]);
-  useEffect(() => {
-    setMetamaskProvider(initialMetamaskProvider);
-  }, [initialMetamaskProvider]);
+
+  console.log({
+    initialMetamaskConnected,
+    metamaskConnected,
+    metamaskProvider,
+  });
 
   const value = {
     metamaskProvider,
     setMetamaskProvider,
     address,
     setAddress,
+    metamaskConnected,
+    setMetamaskConnected,
   };
 
   return (

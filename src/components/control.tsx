@@ -1,15 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
 
 const Control = () => {
-  const { metamaskProvider, setMetamaskProvider, address, setAddress } =
+  const { setMetamaskProvider, address, setAddress, metamaskConnected } =
     useContext(RootContext);
-
   const connect_wallet = async () => {
-    const metamaskProvider: any = await blockchain.getMetamaskProvider();
+    const metamaskProvider = await blockchain.getMetamaskProvider();
     if (metamaskProvider) {
+      blockchain.addAccountsChangedListener(metamaskProvider, () => {
+        "Addresses changed, reloading";
+        window.location.reload();
+      });
+      blockchain.connectMetamask(metamaskProvider);
       const [address] = await blockchain.getAddresses(metamaskProvider);
       setAddress(address);
       setMetamaskProvider(metamaskProvider);
@@ -22,10 +26,10 @@ const Control = () => {
     <>
       <Button
         variant="contained"
-        disabled={metamaskProvider !== undefined}
+        disabled={metamaskConnected}
         onClick={connect_wallet}
       >
-        {metamaskProvider !== undefined ? address : "Connect Wallet"}
+        {metamaskConnected ? address : "Connect Wallet"}
       </Button>
     </>
   );
