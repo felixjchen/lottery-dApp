@@ -4,15 +4,15 @@ import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
 
 const Control = () => {
-  const { provider, setProvider, address, setAddress } =
+  const { metamaskProvider, setMetamaskProvider, address, setAddress } =
     useContext(RootContext);
 
   const connect_wallet = async () => {
-    const provider: any = await blockchain.getMetamaskProvider();
-    if (provider) {
-      const [address] = await blockchain.getAddresses(provider);
+    const metamaskProvider: any = await blockchain.getMetamaskProvider();
+    if (metamaskProvider) {
+      const [address] = await blockchain.getAddresses(metamaskProvider);
       setAddress(address);
-      setProvider(provider);
+      setMetamaskProvider(metamaskProvider);
     } else {
       alert("Could not find window.etherum");
     }
@@ -22,10 +22,10 @@ const Control = () => {
     <>
       <Button
         variant="contained"
-        disabled={provider !== undefined}
+        disabled={metamaskProvider !== undefined}
         onClick={connect_wallet}
       >
-        {provider !== undefined ? address : "Connect Wallet"}
+        {metamaskProvider !== undefined ? address : "Connect Wallet"}
       </Button>
     </>
   );

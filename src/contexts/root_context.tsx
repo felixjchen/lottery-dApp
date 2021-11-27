@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 const NO_OP = () => {};
 
 interface RootContextValue {
-  provider: any;
-  setProvider: CallableFunction;
+  metamaskProvider: any;
+  setMetamaskProvider: CallableFunction;
   address: string;
   setAddress: CallableFunction;
 }
@@ -14,8 +14,8 @@ interface RootContextProviderProps {
   value: RootContextValue;
 }
 const RootContext = createContext<RootContextValue>({
-  provider: undefined,
-  setProvider: NO_OP,
+  metamaskProvider: undefined,
+  setMetamaskProvider: NO_OP,
   address: "",
   setAddress: NO_OP,
 });

@@ -7,28 +7,30 @@ import { useAsync } from "react-async";
 import * as blockchain from "./apis/blockchain";
 
 const App = () => {
-  const initialProvider = useAsync({
+  const initialMetamaskProvider = useAsync({
     promiseFn: blockchain.getMetamaskProvider,
   }).data;
 
-  const [provider, setProvider] = useState(initialProvider);
+  const [metamaskProvider, setMetamaskProvider] = useState(
+    initialMetamaskProvider
+  );
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    if (provider) {
+    if (metamaskProvider) {
       (async () => {
-        const [address] = await blockchain.getAddresses(provider);
+        const [address] = await blockchain.getAddresses(metamaskProvider);
         setAddress(address);
       })();
     }
-  }, [provider, setAddress]);
+  }, [metamaskProvider, setAddress]);
   useEffect(() => {
-    setProvider(initialProvider);
-  }, [initialProvider]);
+    setMetamaskProvider(initialMetamaskProvider);
+  }, [initialMetamaskProvider]);
 
   const value = {
-    provider,
-    setProvider,
+    metamaskProvider,
+    setMetamaskProvider,
     address,
     setAddress,
   };

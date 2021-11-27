@@ -13,6 +13,11 @@ interface ProviderRpcError extends Error {
   code: number;
   data?: unknown;
 }
+
+export const getWeb3Provider = (provider: any) => {
+  return new ethers.providers.Web3Provider(provider);
+};
+
 export const getMetamaskProvider = async () => {
   const provider = await detectEthereumProvider();
   return provider;
