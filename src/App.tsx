@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { RootContextProvider } from "./contexts/root_context";
 import { Control } from "./components/control";
@@ -10,20 +10,14 @@ const App = () => {
   const initialProvider = useAsync({
     promiseFn: blockchain.getMetamaskProvider,
   }).data;
-  const initialIsMetamaskConnected = initialProvider
-    ? blockchain.isMetamaskConnected(initialProvider)
-    : false;
-
+  useEffect(() => {
+    setProvider(initialProvider);
+  }, [initialProvider]);
   const [provider, setProvider] = useState(initialProvider);
-  const [isMetamaskConnected, setIsMetamaskConnected] = useState(
-    initialIsMetamaskConnected
-  );
 
   const value = {
     provider,
     setProvider,
-    isMetamaskConnected,
-    setIsMetamaskConnected,
   };
 
   return (

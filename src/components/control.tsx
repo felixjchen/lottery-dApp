@@ -1,33 +1,42 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { RootContext } from "../contexts/root_context";
 import * as blockchain from "../apis/blockchain";
-import { useAsync } from "react-async";
 
 const Control = () => {
-  const { isMetamaskConnected, provider, setProvider } =
-    useContext(RootContext);
+  const { provider, setProvider } = useContext(RootContext);
+  const [address, setAddress] = useState();
 
-  const connect_wallet_onclick = async () => {
-    const provider = await blockchain.getMetamaskProvider();
+  useEffect(() => {
     if (provider) {
-      blockchain.connectToMetamask(provider);
+      (async () => {
+        const [address] = await blockchain.getAddresses(provider);
+        setAddress(address);
+      })();
+    }
+  }, [provider]);
+
+  const connect_wallet = async () => {
+    const provider: any = await blockchain.getMetamaskProvider();
+    if (provider) {
+      const [address] = await blockchain.getAddresses(provider);
+      setAddress(address);
       setProvider(provider);
     } else {
       alert("Could not find window.etherum");
     }
   };
-  connect_wallet_onclick();
 
-  console.log({ isMetamaskConnected, provider });
   return (
-    <Button
-      variant="contained"
-      disabled={provider !== undefined}
-      onClick={connect_wallet_onclick}
-    >
-      Connect Wallet
-    </Button>
+    <>
+      <Button
+        variant="contained"
+        disabled={provider !== undefined}
+        onClick={connect_wallet}
+      >
+        {provider !== undefined ? address : "Connect Wallet"}
+      </Button>
+    </>
   );
 };
 
