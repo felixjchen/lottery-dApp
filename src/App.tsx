@@ -5,7 +5,9 @@ import "./App.css";
 import { useAsync } from "react-async";
 import * as blockchain from "./apis/blockchain";
 import { ethers } from "ethers";
+import { Owner } from "./components/owner";
 import { User } from "./components/user";
+import { Draw } from "./components/draw";
 import { Card } from "@mui/material";
 
 const App = () => {
@@ -27,6 +29,8 @@ const App = () => {
     ethers.Contract | undefined
   >(undefined);
   const [address, setAddress] = useState("");
+  const [amIOwner, setAmIOwner] = useState(false);
+  const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
     if (initialMetamaskProvider) {
@@ -48,7 +52,9 @@ const App = () => {
           setMockTokenContract(mockTokenContract);
 
           const amIOwner = await lotteryContract.amIOwner();
+          setAmIOwner(amIOwner);
           const amIManager = await lotteryContract.amIManager();
+          setAmIManager(amIManager);
         }
       })();
     }
@@ -76,6 +82,14 @@ const App = () => {
               <User></User>
             </Card>
           )}
+
+          {metamaskConnected && amIOwner && (
+            <Card variant="outlined">
+              <Owner></Owner>
+            </Card>
+          )}
+
+          {metamaskConnected && (amIOwner || amIManager) && <Draw></Draw>}
         </header>
       </div>
     </RootContextProvider>

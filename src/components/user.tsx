@@ -2,12 +2,9 @@ import React, { useContext, useState } from "react";
 import { RootContext } from "../contexts/root_context";
 import Async from "react-async";
 import * as blockchain from "../apis/blockchain";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 
-import {
-  lottery_address,
-  mocktoken_address,
-} from "../constants/smart_contract_address.json";
+import { lottery_address } from "../constants/smart_contract_address.json";
 
 const User = () => {
   const { lotteryContract, mockTokenContract, address, provider } =
@@ -15,7 +12,7 @@ const User = () => {
 
   const [buyPending, setBuyPending] = useState("");
 
-  const getLotteryData = async (args: any) => {
+  const getUserData = async () => {
     const ticketCount = (await lotteryContract?.getTickets()).toNumber();
     const prizeTotal = blockchain.weiToEth(
       await lotteryContract?.getPrizeTotal()
@@ -44,12 +41,12 @@ const User = () => {
   };
 
   return (
-    <Async promiseFn={getLotteryData}>
+    <Async promiseFn={getUserData}>
       <Async.Pending>Loading...</Async.Pending>
       <Async.Fulfilled>
         {(data) => (
           <div>
-            <h3>User </h3>
+            <h3>User</h3>
             <pre>{JSON.stringify(data, null, 2)}</pre>
             <Button
               variant="contained"
@@ -58,7 +55,6 @@ const User = () => {
             >
               {buyPending !== "" ? buyPending : "Buy Ticket"}
             </Button>
-            {buyPending && <CircularProgress></CircularProgress>}
           </div>
         )}
       </Async.Fulfilled>
