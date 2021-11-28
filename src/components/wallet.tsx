@@ -25,6 +25,7 @@ const Wallet = () => {
   return (
     <>
       <Button
+        id="wallet"
         variant="contained"
         disabled={metamaskConnected}
         onClick={connectWalletOnClick}

@@ -76,18 +76,20 @@ const App = () => {
     <RootContextProvider value={value}>
       <div className="App">
         <header className="App-header">
-          <Wallet></Wallet>
-          {metamaskConnected && (
-            <Card variant="outlined">
-              <User></User>
-            </Card>
-          )}
+          <div>
+            {metamaskConnected && (
+              <Card variant="outlined">
+                <User></User>
+              </Card>
+            )}
 
-          {metamaskConnected && amIOwner && (
-            <Card variant="outlined">
-              <Owner></Owner>
-            </Card>
-          )}
+            {metamaskConnected && amIOwner && (
+              <Card variant="outlined">
+                <Owner></Owner>
+              </Card>
+            )}
+          </div>
+          <Wallet></Wallet>
 
           {metamaskConnected && (amIOwner || amIManager) && <Draw></Draw>}
         </header>

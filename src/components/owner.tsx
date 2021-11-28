@@ -66,43 +66,57 @@ const Owner = () => {
       <Async.Pending>Loading...</Async.Pending>
       <Async.Fulfilled>
         {(data) => (
-          <div>
+          <div id="owner">
             <h3>Owner</h3>
             <pre>{JSON.stringify(data, null, 2)}</pre>
-            <Input
-              placeholder="Ticket Price (in ether)"
-              inputRef={ticketPriceRef}
-            />
-            <Button
-              disabled={txnPending !== ""}
-              variant="contained"
-              onClick={setTicketPriceOnClick}
-            >
-              Set Ticket Price
-            </Button>
-            <Input placeholder="Manager Address" inputRef={managerAddressRef} />
-            <Button
-              disabled={txnPending !== ""}
-              variant="contained"
-              onClick={addManagerOnClick}
-            >
-              Add Manager
-            </Button>
-            <Button
-              disabled={txnPending !== ""}
-              variant="contained"
-              onClick={deleteManagerOnClick}
-            >
-              Delete Manager
-            </Button>
-            <Input placeholder="Wallet Address" inputRef={walletAddressRef} />
-            <Button
-              disabled={txnPending !== ""}
-              variant="contained"
-              onClick={withdrawOnClick}
-            >
-              Withdraw
-            </Button>
+            <div>
+              <div>
+                <Input
+                  placeholder="Ticket Price (in ether)"
+                  inputRef={ticketPriceRef}
+                />
+                <Button
+                  disabled={txnPending !== ""}
+                  variant="contained"
+                  onClick={setTicketPriceOnClick}
+                >
+                  Set Ticket Price
+                </Button>
+              </div>
+              <div>
+                <Input
+                  placeholder="Manager Address"
+                  inputRef={managerAddressRef}
+                />
+                <Button
+                  disabled={txnPending !== ""}
+                  variant="contained"
+                  onClick={addManagerOnClick}
+                >
+                  Add Manager
+                </Button>
+                <Button
+                  disabled={txnPending !== ""}
+                  variant="contained"
+                  onClick={deleteManagerOnClick}
+                >
+                  Delete Manager
+                </Button>
+              </div>
+              <div>
+                <Input
+                  placeholder="Wallet Address"
+                  inputRef={walletAddressRef}
+                />
+                <Button
+                  disabled={txnPending !== ""}
+                  variant="contained"
+                  onClick={withdrawOnClick}
+                >
+                  Withdraw
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </Async.Fulfilled>

@@ -13,6 +13,22 @@
   }
 }
 
+#wallet {
+  border: 1px solid white;
+  color: white;
+  float: left;
+  margin: 1rem;
+}
+
+#owner > div {
+  display: flex;
+  flex-direction: column;
+}
+
+#owner > div > button {
+  margin: 0 1rem;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,6 +40,14 @@
   color: white;
 }
 
+.App-header > div {
+  display: flex;
+  justify-content: center;
+}
+.App-header > div > div {
+  padding: 1rem;
+  margin: 1rem;
+}
 .App-link {
   color: #61dafb;
 }
