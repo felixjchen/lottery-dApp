@@ -44,7 +44,7 @@ const Owner = () => {
   const deleteManagerOnClick = async () => {
     const managerAddress = managerAddressRef.current?.value;
     if (managerAddress) {
-      const { hash } = await lotteryContract?.ownerWithdraw(managerAddress);
+      const { hash } = await lotteryContract?.deleteManager(managerAddress);
       setTxnPending(hash);
       await provider?.waitForTransaction(hash);
       window.location.reload();
