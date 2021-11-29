@@ -51,7 +51,9 @@ const User = () => {
   };
 
   const buttonOnClick = async () => {
-    needApprove ? await approveOnClick() : await buyTicketOnClick();
+    try {
+      needApprove ? await approveOnClick() : await buyTicketOnClick();
+    } catch {}
   };
 
   return (

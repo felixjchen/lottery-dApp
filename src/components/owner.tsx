@@ -19,46 +19,54 @@ const Owner = () => {
   };
 
   const setTicketPriceOnClick = async () => {
-    const ticketPrice = ticketPriceRef.current?.value;
-    if (ticketPrice) {
-      const ticketPriceMantissa = blockchain.ethToWei(ticketPrice);
-      const { hash } = await lotteryContract?.setTicketPrice(
-        ticketPriceMantissa
-      );
-      setTxnPending(hash);
-      await provider?.waitForTransaction(hash);
-      window.location.reload();
-    }
+    try {
+      const ticketPrice = ticketPriceRef.current?.value;
+      if (ticketPrice) {
+        const ticketPriceMantissa = blockchain.ethToWei(ticketPrice);
+        const { hash } = await lotteryContract?.setTicketPrice(
+          ticketPriceMantissa
+        );
+        setTxnPending(hash);
+        await provider?.waitForTransaction(hash);
+        window.location.reload();
+      }
+    } catch {}
   };
 
   const addManagerOnClick = async () => {
-    const managerAddress = managerAddressRef.current?.value;
-    if (managerAddress) {
-      const { hash } = await lotteryContract?.addManager(managerAddress);
-      setTxnPending(hash);
-      await provider?.waitForTransaction(hash);
-      window.location.reload();
-    }
+    try {
+      const managerAddress = managerAddressRef.current?.value;
+      if (managerAddress) {
+        const { hash } = await lotteryContract?.addManager(managerAddress);
+        setTxnPending(hash);
+        await provider?.waitForTransaction(hash);
+        window.location.reload();
+      }
+    } catch {}
   };
 
   const deleteManagerOnClick = async () => {
-    const managerAddress = managerAddressRef.current?.value;
-    if (managerAddress) {
-      const { hash } = await lotteryContract?.deleteManager(managerAddress);
-      setTxnPending(hash);
-      await provider?.waitForTransaction(hash);
-      window.location.reload();
-    }
+    try {
+      const managerAddress = managerAddressRef.current?.value;
+      if (managerAddress) {
+        const { hash } = await lotteryContract?.deleteManager(managerAddress);
+        setTxnPending(hash);
+        await provider?.waitForTransaction(hash);
+        window.location.reload();
+      }
+    } catch {}
   };
 
   const withdrawOnClick = async () => {
-    const walletAddress = walletAddressRef.current?.value;
-    if (walletAddress) {
-      const { hash } = await lotteryContract?.ownerWithdraw(walletAddress);
-      setTxnPending(hash);
-      await provider?.waitForTransaction(hash);
-      window.location.reload();
-    }
+    try {
+      const walletAddress = walletAddressRef.current?.value;
+      if (walletAddress) {
+        const { hash } = await lotteryContract?.ownerWithdraw(walletAddress);
+        setTxnPending(hash);
+        await provider?.waitForTransaction(hash);
+        window.location.reload();
+      }
+    } catch {}
   };
 
   return (
