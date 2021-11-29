@@ -107,6 +107,9 @@ export const weiToEth = (weiBalance: ethers.BigNumberish) => {
 export const ethToWei = (ethBalance: string) => {
   return ethers.utils.parseEther(ethBalance);
 };
+export const getMaxBigNumber = () => {
+  return ethers.constants.MaxUint256;
+};
 export const formatUnits = (
   weiBalance: ethers.BigNumberish,
   decimals: ethers.BigNumberish

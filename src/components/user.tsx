@@ -11,6 +11,7 @@ const User = () => {
     useContext(RootContext);
 
   const [buyPending, setBuyPending] = useState("");
+  const [needApprove, setNeedApprove] = useState(true);
 
   const getUserData = async () => {
     const ticketCount = (await lotteryContract?.getTickets()).toNumber();
@@ -22,41 +23,64 @@ const User = () => {
     );
     const balance = `${blockchain.weiToEth(
       await mockTokenContract?.balanceOf(address)
-    )} MOK`;
+    )}`;
+    const allowance = await mockTokenContract?.allowance(
+      address,
+      lotteryContract?.address
+    );
+    const needApprove = allowance.lt(await lotteryContract?.getTicketPrice());
+    setNeedApprove(needApprove);
     return { ticketCount, prizeTotal, ticketPrice, balance };
   };
 
   const buyTicketOnClick = async () => {
-    const ticketPriceMantissa = await lotteryContract?.getTicketPrice();
-    let { hash } = await mockTokenContract?.approve(
-      lottery_address,
-      ticketPriceMantissa
-    );
-    setBuyPending(hash);
-    await provider?.waitForTransaction(hash);
-    ({ hash } = await lotteryContract?.buyTickets(1));
+    const { hash } = await lotteryContract?.buyTickets(1);
     setBuyPending(hash);
     await provider?.waitForTransaction(hash);
     window.location.reload();
+  };
+
+  const approveOnClick = async () => {
+    const { hash } = await mockTokenContract?.approve(
+      lottery_address,
+      blockchain.getMaxBigNumber()
+    );
+    setBuyPending(hash);
+    await provider?.waitForTransaction(hash);
+    window.location.reload();
+  };
+
+  const buttonOnClick = async () => {
+    needApprove ? await approveOnClick() : await buyTicketOnClick();
   };
 
   return (
     <Async promiseFn={getUserData}>
       <Async.Pending>Loading...</Async.Pending>
       <Async.Fulfilled>
-        {(data) => (
-          <div>
-            <h3>User</h3>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-            <Button
-              variant="contained"
-              onClick={buyTicketOnClick}
-              disabled={buyPending !== ""}
-            >
-              {buyPending !== "" ? buyPending : "Buy Ticket"}
-            </Button>
-          </div>
-        )}
+        {(data: any) => {
+          const insufficentBalance =
+            Number(data.balance) < Number(data.ticketPrice);
+          return (
+            <div>
+              <h3>User</h3>
+              <pre>{JSON.stringify(data, null, 2)}</pre>
+              <Button
+                variant="contained"
+                onClick={buttonOnClick}
+                disabled={buyPending !== "" || insufficentBalance}
+              >
+                {insufficentBalance
+                  ? "Insufficient balance"
+                  : buyPending !== ""
+                  ? buyPending
+                  : needApprove
+                  ? "Approve"
+                  : "Buy Ticket"}
+              </Button>
+            </div>
+          );
+        }}
       </Async.Fulfilled>
       <Async.Rejected>
         {(error) => `Something went wrong: ${error.message}`}
